@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¿QUÉ TAN ADICTO ERES A MINECRAFT?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        :root {
+            --grass-top: #5D9C3C;
+            --grass-side: #8B6B3E;
+            --dirt: #8B6B3E;
+            --stone: #7F7F7F;
+            --stone-dark: #5A5A5A;
+            --wood: #8B5A2B;
+            --wood-dark: #6B4423;
+            --sky: #78A7FF;
+            --sky-dark: #5B8AD9;
+            --sand: #D9C68A;
+            --leaves: #3D8B2E;
+            --text-dark: #2A1A0A;
+            --text-light: #FFFFFF;
+            --panel-bg: #C6C6C6;
+            --panel-border: #373737;
+            --panel-highlight: #FFFFFF;
+            --panel-shadow: #555555;
+            --btn-green: #5D9C3C;
+            --btn-green-dark: #3D6B24;
+            --btn-green-light: #7DBB5C;
+            --btn-stone: #A0A0A0;
+            --btn-stone-dark: #6E6E6E;
+            --btn-stone-light: #C8C8C8;
+            --red: #D03030;
+            --gold: #FFAA00;
+        }
+
+        body {
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            background-color: var(--sky);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* CONTROL DE MÚSICA */
+        .music-control {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            z-index: 100;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .music-btn {
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-size: 10px;
+            padding: 10px 14px;
+            background: var(--btn-stone);
+            color: #FFFFFF;
+            text-shadow: 1px 1px 0 #3F3F3F;
+            border: none;
+            cursor: pointer;
+            box-shadow: 
+                inset -3px -3px 0 var(--btn-stone-dark),
+                inset 3px 3px 0 var(--btn-stone-light);
+        }
+
+        .music-btn:hover {
+            background: #B0B0B0;
+        }
+
+        .music-btn:active {
+            box-shadow: 
+                inset 3px 3px 0 var(--btn-stone-dark),
+                inset -3px -3px 0 var(--btn-stone-light);
+            transform: translateY(1px);
+        }
+
+        .music-btn.music-on {
+            background: var(--btn-green);
+            box-shadow: 
+                inset -3px -3px 0 var(--btn-green-dark),
+                inset 3px 3px 0 var(--btn-green-light);
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 20px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #3F3F3F;
+            border: 2px solid #000;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--btn-stone);
+            cursor: pointer;
+            box-shadow: 
+                inset -2px -2px 0 var(--btn-stone-dark),
+                inset 2px 2px 0 var(--btn-stone-light);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: var(--btn-stone);
+            cursor: pointer;
+            border: none;
+            box-shadow: 
+                inset -2px -2px 0 var(--btn-stone-dark),
+                inset 2px 2px 0 var(--btn-stone-light);
+        }
+
+        /* FONDO DE BLOQUES MINECRAFT */
+        .minecraft-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .sky-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom, var(--sky) 0%, #9EC0FF 100%);
+        }
+
+        .cloud {
+            position: absolute;
+            background: #FFFFFF;
+            opacity: 0.9;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: #FFFFFF;
+        }
+
+        .cloud-1 {
+            width: 120px;
+            height: 24px;
+            top: 8%;
+            left: 10%;
+        }
+        .cloud-1::before {
+            width: 48px;
+            height: 24px;
+            top: -24px;
+            left: 24px;
+        }
+        .cloud-1::after {
+            width: 72px;
+            height: 24px;
+            top: -12px;
+            left: 60px;
+        }
+
+        .cloud-2 {
+            width: 96px;
+            height: 24px;
+            top: 15%;
+            right: 15%;
+        }
+        .cloud-2::before {
+            width: 60px;
+            height: 24px;
+            top: -24px;
+            left: 12px;
+        }
+
+        .cloud-3 {
+            width: 144px;
+            height: 24px;
+            top: 25%;
+            left: 50%;
+        }
+        .cloud-3::before {
+            width: 48px;
+            height: 24px;
+            top: -24px;
+            left: 36px;
+        }
+        .cloud-3::after {
+            width: 36px;
+            height: 24px;
+            top: -12px;
+            left: 96px;
+        }
+
+        .mountain-layer {
+            position: absolute;
+            bottom: 40%;
+            left: 0;
+            width: 100%;
+            height: 20%;
+        }
+
+        .mountain {
+            position: absolute;
+            bottom: 0;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+
+        .mountain-1 {
+            left: 5%;
+            border-width: 0 80px 120px 80px;
+            border-color: transparent transparent var(--stone) transparent;
+        }
+        .mountain-1::after {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: -60px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 60px 80px 60px;
+            border-color: transparent transparent var(--grass-top) transparent;
+        }
+
+        .mountain-2 {
+            right: 10%;
+            border-width: 0 100px 150px 100px;
+            border-color: transparent transparent var(--stone-dark) transparent;
+        }
+
+        .ground-layer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    var(--grass-top) 0px,
+                    var(--grass-top) 8px,
+                    var(--dirt) 8px,
+                    var(--dirt) 48px,
+                    var(--wood-dark) 48px,
+                    var(--wood-dark) 49px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent 0px,
+                    transparent 47px,
+                    rgba(0,0,0,0.1) 47px,
+                    rgba(0,0,0,0.1) 48px
+                );
+        }
+
+        .ground-layer::before {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 8px);
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(90, 58, 30, 0.4) 2px, transparent 3px),
+                radial-gradient(circle at 30% 60%, rgba(90, 58, 30, 0.3) 2px, transparent 3px),
+                radial-gradient(circle at 70% 30%, rgba(90, 58, 30, 0.35) 2px, transparent 3px),
+                radial-gradient(circle at 90% 80%, rgba(90, 58, 30, 0.3) 2px, transparent 3px),
+                radial-gradient(circle at 50% 50%, rgba(139, 107, 62, 0.3) 3px, transparent 4px);
+            background-size: 48px 48px;
+        }
+
+        .tree {
+            position: absolute;
+            bottom: 40%;
+            z-index: 1;
+        }
+
+        .tree-trunk {
+            width: 24px;
+            height: 72px;
+            background: var(--wood);
+            margin: 0 auto;
+            position: relative;
+            border-left: 2px solid var(--wood-dark);
+            border-right: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .tree-leaves {
+            width: 96px;
+            height: 96px;
+            background: var(--leaves);
+            position: relative;
+            left: -36px;
+            top: -12px;
+            border: 2px solid #2D6B22;
+            box-shadow: inset -4px -4px 0 rgba(0,0,0,0.2), inset 4px 4px 0 rgba(255,255,255,0.1);
+        }
+
+        .tree-leaves::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 30%, #4DA83C 4px, transparent 5px),
+                radial-gradient(circle at 70% 60%, #2D6B22 3px, transparent 4px),
+                radial-gradient(circle at 40% 80%, #4DA83C 3px, transparent 4px);
+        }
+
+        .tree-1 { left: 8%; }
+        .tree-2 { right: 20%; }
+        .tree-3 { left: 70%; bottom: 42%; transform: scale(0.7); }
+
+        .flower {
+            position: absolute;
+            bottom: 40%;
+            width: 8px;
+            height: 8px;
+            z-index: 1;
+        }
+        .flower-1 { left: 25%; background: #FF5555; }
+        .flower-2 { left: 40%; background: #FFFF55; }
+        .flower-3 { right: 35%; background: #FF55FF; }
+        .flower-4 { right: 8%; background: #55FFFF; }
+
+        .game-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mc-panel {
+            background: var(--panel-bg);
+            border: 4px solid var(--panel-border);
+            box-shadow: 
+                inset 4px 4px 0 var(--panel-highlight),
+                inset -4px -4px 0 var(--panel-shadow),
+                8px 8px 0 rgba(0,0,0,0.3);
+            padding: 32px;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+        }
+
+        .mc-panel-dark {
+            background: rgba(20, 20, 20, 0.9);
+            border: 4px solid #000000;
+            box-shadow: 
+                inset 4px 4px 0 rgba(255,255,255,0.1),
+                inset -4px -4px 0 rgba(0,0,0,0.5),
+                8px 8px 0 rgba(0,0,0,0.4);
+            color: #FFFFFF;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .game-title {
+            font-size: clamp(16px, 4vw, 28px);
+            text-align: center;
+            color: #FFFFFF;
+            text-shadow: 
+                4px 4px 0 #3F3F3F,
+                -2px -2px 0 #000000,
+                2px -2px 0 #000000,
+                -2px 2px 0 #000000,
+                0 0 20px rgba(93, 156, 60, 0.5);
+            margin-bottom: 24px;
+            line-height: 1.4;
+            letter-spacing: 1px;
+        }
+
+        .game-subtitle {
+            font-size: clamp(8px, 2vw, 12px);
+            text-align: center;
+            color: #E0E0E0;
+            text-shadow: 2px 2px 0 #000000;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .section-title {
+            font-size: clamp(10px, 2.5vw, 16px);
+            text-align: center;
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0 #000000;
+            margin-bottom: 16px;
+        }
+
+        .mc-btn {
+            display: block;
+            width: 100%;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-size: clamp(10px, 2.5vw, 14px);
+            padding: 16px 24px;
+            background: var(--btn-stone);
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0 #3F3F3F;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-stone-dark),
+                inset 4px 4px 0 var(--btn-stone-light);
+            transition: none;
+            margin: 8px 0;
+            text-align: center;
+            text-decoration: none;
+            line-height: 1.4;
+        }
+
+        .mc-btn:hover {
+            background: #B0B0B0;
+        }
+
+        .mc-btn:active {
+            box-shadow: 
+                inset 4px 4px 0 var(--btn-stone-dark),
+                inset -4px -4px 0 var(--btn-stone-light);
+            transform: translateY(2px);
+        }
+
+        .mc-btn-green {
+            background: var(--btn-green);
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-green-dark),
+                inset 4px 4px 0 var(--btn-green-light);
+        }
+
+        .mc-btn-green:hover {
+            background: #6DAA4C;
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-green-dark),
+                inset 4px 4px 0 #8DCA6C;
+        }
+
+        .mc-btn-green:active {
+            box-shadow: 
+                inset 4px 4px 0 var(--btn-green-dark),
+                inset -4px -4px 0 var(--btn-green-light);
+        }
+
+        .mc-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .mc-btn:disabled:hover {
+            background: var(--btn-stone);
+        }
+
+        .answer-btn {
+            display: block;
+            width: 100%;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-size: clamp(8px, 2vw, 11px);
+            padding: 14px 16px;
+            background: var(--btn-stone);
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0 #3F3F3F;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-stone-dark),
+                inset 4px 4px 0 var(--btn-stone-light);
+            margin: 6px 0;
+            line-height: 1.5;
+            transition: none;
+        }
+
+        .answer-btn:hover {
+            background: #B0B0B0;
+        }
+
+        .answer-btn.selected {
+            background: var(--btn-green);
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-green-dark),
+                inset 4px 4px 0 var(--btn-green-light),
+                0 0 0 4px var(--gold);
+        }
+
+        .answer-btn .option-letter {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .progress-container {
+            margin-bottom: 24px;
+        }
+
+        .progress-label {
+            font-size: clamp(8px, 2vw, 10px);
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0 #000000;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 2px;
+            height: 20px;
+            background: #000000;
+            padding: 2px;
+            border: 2px solid #3F3F3F;
+        }
+
+        .progress-block {
+            flex: 1;
+            background: #3F3F3F;
+            transition: background 0.2s;
+        }
+
+        .progress-block.filled {
+            background: var(--btn-green);
+            box-shadow: inset 2px 2px 0 var(--btn-green-light), inset -2px -2px 0 var(--btn-green-dark);
+        }
+
+        .progress-block.current {
+            background: var(--gold);
+            box-shadow: inset 2px 2px 0 #FFCC44, inset -2px -2px 0 #CC8800;
+            animation: pulse 0.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .question-panel {
+            background: rgba(0, 0, 0, 0.4);
+            border: 4px solid #000000;
+            box-shadow: inset 4px 4px 0 rgba(255,255,255,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: clamp(10px, 2.5vw, 14px);
+            color: #FFFFFF;
+            text-shadow: 2px 2px 0 #000000;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .result-percent {
+            font-size: clamp(48px, 15vw, 96px);
+            text-align: center;
+            color: var(--gold);
+            text-shadow: 
+                4px 4px 0 #8B5A00,
+                -2px -2px 0 #000000,
+                2px -2px 0 #000000,
+                -2px 2px 0 #000000;
+            margin: 20px 0;
+            line-height: 1;
+        }
+
+        .result-category {
+            font-size: clamp(12px, 3vw, 20px);
+            text-align: center;
+            color: #FFFFFF;
+            text-shadow: 3px 3px 0 #000000;
+            margin-bottom: 24px;
+            padding: 16px;
+            background: rgba(0,0,0,0.3);
+            border: 3px solid var(--gold);
+        }
+
+        .result-description {
+            font-size: clamp(8px, 2vw, 11px);
+            color: #E0E0E0;
+            text-shadow: 1px 1px 0 #000000;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 32px;
+            padding: 16px;
+            background: rgba(0,0,0,0.2);
+            border: 2px solid #3F3F3F;
+        }
+
+        .result-blocks {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .result-block {
+            width: 24px;
+            height: 24px;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s;
+        }
+
+        .result-block.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .block-grass {
+            background: var(--grass-top);
+            box-shadow: inset 2px 2px 0 var(--btn-green-light), inset -2px -2px 0 var(--btn-green-dark);
+        }
+
+        .block-dirt {
+            background: var(--dirt);
+            box-shadow: inset 2px 2px 0 #A08050, inset -2px -2px 0 #6B4B2E;
+        }
+
+        .block-stone {
+            background: var(--stone);
+            box-shadow: inset 2px 2px 0 #999999, inset -2px -2px 0 var(--stone-dark);
+        }
+
+        .block-diamond {
+            background: #55FFFF;
+            box-shadow: inset 2px 2px 0 #AAFFFF, inset -2px -2px 0 #00AAAA;
+        }
+
+        .block-gold {
+            background: var(--gold);
+            box-shadow: inset 2px 2px 0 #FFCC44, inset -2px -2px 0 #AA7700;
+        }
+
+        .disclaimer {
+            font-size: clamp(6px, 1.5vw, 9px);
+            text-align: center;
+            color: #FFAA00;
+            text-shadow: 1px 1px 0 #000000;
+            margin-top: 32px;
+            opacity: 0.9;
+        }
+
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: var(--btn-green);
+            color: #FFFFFF;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            font-size: 10px;
+            padding: 16px 24px;
+            border: 4px solid #000000;
+            box-shadow: 
+                inset -4px -4px 0 var(--btn-green-dark),
+                inset 4px 4px 0 var(--btn-green-light),
+                4px 4px 0 rgba(0,0,0,0.3);
+            text-shadow: 2px 2px 0 #3F3F3F;
+            z-index: 1000;
+            transition: transform 0.3s;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-row .mc-btn {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .mc-panel {
+                padding: 20px 16px;
+            }
+            .game-title {
+                margin-bottom: 16px;
+            }
+            .game-subtitle {
+                margin-bottom: 28px;
+            }
+            .question-panel {
+                padding: 16px 12px;
+            }
+            .answer-btn {
+                padding: 12px;
+            }
+            .btn-row {
+                flex-direction: column;
+            }
+            .btn-row .mc-btn {
+                min-width: 100%;
+            }
+            .music-control {
+                top: 8px;
+                right: 8px;
+            }
+            .music-btn {
+                font-size: 8px;
+                padding: 8px 10px;
+            }
+            .volume-slider {
+                width: 60px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .game-container {
+                padding: 10px;
+            }
+            .mc-panel {
+                padding: 16px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- AUDIO -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="https://archive.org/download/c-418-aria-math-minecraft-volume-beta_202505/Minecraft/C418%20-%20Sweden%20-%20Minecraft%20Volume%20Alpha.mp3" type="audio/mpeg">
+        <source src="https://minecraft.fandom.com/wiki/File:Sweden.ogg" type="audio/ogg">
+    </audio>
+    <audio id="clickSound" preload="auto">
+        <source src="https://minecraft.fandom.com/wiki/File:Wood_button_click_on.ogg" type="audio/ogg">
+    </audio>
+
+    <!-- CONTROL DE MÚSICA -->
+    <div class="music-control">
+        <button class="music-btn" id="musicToggle" title="Activar/Desactivar música">♫ OFF</button>
+        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="40" title="Volumen">
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">¡RESULTADO COPIADO!</div>
+
+    <!-- FONDO MINECRAFT -->
+    <div class="minecraft-bg">
+        <div class="sky-layer"></div>
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        
+        <div class="mountain-layer">
+            <div class="mountain mountain-1"></div>
+            <div class="mountain mountain-2"></div>
+        </div>
+
+        <div class="tree tree-1">
+            <div class="tree-leaves"></div>
+            <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-2">
+            <div class="tree-leaves"></div>
+            <div class="tree-trunk"></div>
+        </div>
+        <div class="tree tree-3">
+            <div class="tree-leaves"></div>
+            <div class="tree-trunk"></div>
+        </div>
+
+        <div class="flower flower-1"></div>
+        <div class="flower flower-2"></div>
+        <div class="flower flower-3"></div>
+        <div class="flower flower-4"></div>
+
+        <div class="ground-layer"></div>
+    </div>
+
+    <!-- CONTENEDOR DEL JUEGO -->
+    <div class="game-container">
+        <div class="mc-panel mc-panel-dark">
+            
+            <!-- PANTALLA DE INICIO -->
+            <div class="screen active" id="startScreen">
+                <h1 class="game-title">¿QUÉ TAN ADICTO ERES A MINECRAFT?</h1>
+                <p class="game-subtitle">Descubre cuánto tiempo de tu vida pertenece al mundo de bloques.</p>
+                
+                <button class="mc-btn mc-btn-green" id="startBtn" style="font-size: clamp(12px, 3vw, 18px); padding: 20px;">
+                    [ EMPEZAR TEST ]
+                </button>
+                
+                <p class="disclaimer">⚠ TEST CREADO SOLO PARA ENTRETENIMIENTO</p>
+                <p class="disclaimer" style="margin-top: 8px;">🎵 Activa la música con el botón de arriba</p>
+            </div>
+
+            <!-- PANTALLA DEL TEST -->
+            <div class="screen" id="testScreen">
+                <div class="progress-container">
+                    <div class="progress-label" id="progressLabel">PREGUNTA 1 / 20</div>
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+
+                <div class="question-panel">
+                    <p class="question-text" id="questionText"></p>
+                </div>
+
+                <div id="answersContainer"></div>
+
+                <button class="mc-btn mc-btn-green" id="nextBtn" disabled style="margin-top: 20px;">
+                    [ SIGUIENTE → ]
+                </button>
+            </div>
+
+            <!-- PANTALLA DE RESULTADO -->
+            <div class="screen" id="resultScreen">
+                <h2 class="section-title">TU NIVEL DE ADICCIÓN</h2>
+                
+                <div class="result-percent" id="resultPercent">0%</div>
+                
+                <div class="result-category" id="resultCategory">CARGANDO...</div>
+                
+                <div class="result-blocks" id="resultBlocks"></div>
+                
+                <div class="result-description" id="resultDescription"></div>
+
+                <div class="btn-row">
+                    <button class="mc-btn mc-btn-green" id="restartBtn">
+                        [ REPETIR TEST ]
+                    </button>
+                    <button class="mc-btn" id="shareBtn">
+                        [ COMPARTIR RESULTADO ]
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    (function() {
+        'use strict';
+
+        // ============== SISTEMA DE AUDIO ==============
+        const bgMusic = document.getElementById('bgMusic');
+        const clickSound = document.getElementById('clickSound');
+        const musicToggle = document.getElementById('musicToggle');
+        const volumeSlider = document.getElementById('volumeSlider');
+        
+        let musicEnabled = false;
+        let audioContext = null;
+        let clickBuffer = null;
+        let musicGainNode = null;
+
+        // Inicializar volumen
+        bgMusic.volume = volumeSlider.value / 100;
+        clickSound.volume = 0.6;
+
+        // Fallback: generar sonido de click con Web Audio API
+        function initAudioContext() {
+            if (!audioContext) {
+                try {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch(e) {
+                    console.log('Web Audio API no soportada');
+                }
+            }
+        }
+
+        function playClickFallback() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.type = 'square';
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.02);
+            oscillator.frequency.setValueAtTime(400, audioContext.currentTime + 0.04);
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.08);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.08);
+        }
+
+        function playClick() {
+            initAudioContext();
+            try {
+                clickSound.currentTime = 0;
+                clickSound.play().catch(() => {
+                    playClickFallback();
+                });
+            } catch(e) {
+                playClickFallback();
+            }
+        }
+
+        function toggleMusic() {
+            initAudioContext();
+            if (musicEnabled) {
+                bgMusic.pause();
+                musicToggle.textContent = '♫ OFF';
+                musicToggle.classList.remove('music-on');
+            } else {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = '♫ ON';
+                    musicToggle.classList.add('music-on');
+                }).catch((err) => {
+                    console.log('No se pudo reproducir la música:', err);
+                    alert('Activa la música haciendo clic en cualquier botón primero, o tu navegador bloquea el audio automático.');
+                });
+            }
+            musicEnabled = !musicEnabled;
+        }
+
+        musicToggle.addEventListener('click', () => {
+            playClick();
+            setTimeout(toggleMusic, 50);
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            bgMusic.volume = volumeSlider.value / 100;
+        });
+
+        // ============== DATOS DEL TEST ==============
+        const questions = [
+            {
+                text: "¿Cuántas horas juegas Minecraft normalmente?",
+                answers: [
+                    { text: "Casi nunca lo abro", points: 0 },
+                    { text: "Menos de 1 hora a la semana", points: 1 },
+                    { text: "1-3 horas por semana", points: 2 },
+                    { text: "Varias horas al día", points: 3 },
+                    { text: "Pierdo la cuenta de las horas", points: 4 }
+                ]
+            },
+            {
+                text: "¿Qué haces cuando dices \"voy a jugar solo 10 minutos\"?",
+                answers: [
+                    { text: "Cierro en 10 minutos exactos", points: 0 },
+                    { text: "Me alargo un poco, 20 minutos", points: 1 },
+                    { text: "Termino jugando 1 hora", points: 2 },
+                    { text: "Cuando me doy cuenta pasaron 3 horas", points: 3 },
+                    { text: "¿10 minutos? Eso no existe en mi vocabulario", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuántos mundos tienes creados?",
+                answers: [
+                    { text: "Ninguno o solo uno de prueba", points: 0 },
+                    { text: "Entre 1 y 3 mundos", points: 1 },
+                    { text: "Entre 4 y 8 mundos", points: 2 },
+                    { text: "Más de 10 mundos", points: 3 },
+                    { text: "Tengo una carpeta llena, pierdo la cuenta", points: 4 }
+                ]
+            },
+            {
+                text: "¿Alguna vez has perdido la noción del tiempo jugando?",
+                answers: [
+                    { text: "Nunca, soy muy consciente", points: 0 },
+                    { text: "Muy de vez en cuando", points: 1 },
+                    { text: "Algunas veces sí", points: 2 },
+                    { text: "Bastante seguido", points: 3 },
+                    { text: "Siempre. ¿Qué es el tiempo?", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuánto sabes de crafteos?",
+                answers: [
+                    { text: "Necesito buscar TODO en Google", points: 0 },
+                    { text: "Sé los más básicos", points: 1 },
+                    { text: "Me defiendo bastante bien", points: 2 },
+                    { text: "Me sé la mayoría de memoria", points: 3 },
+                    { text: "Soy una enciclopedia de crafteos viviente", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cómo organizas tus cofres?",
+                answers: [
+                    { text: "Tengo TODO en un solo cofre desordenado", points: 0 },
+                    { text: "Intento ordenar pero nunca lo consigo", points: 1 },
+                    { text: "Los tengo medianamente organizados", points: 2 },
+                    { text: "Cada cosa tiene su cofre y etiqueta", points: 3 },
+                    { text: "Sistema de clasificación perfecto, hasta color por ítem", points: 4 }
+                ]
+            },
+            {
+                text: "¿Has construido una casa enorme aunque estés jugando solo?",
+                answers: [
+                    { text: "Vivo en una casita de tierra básica", points: 0 },
+                    { text: "Mi casa es pequeña pero funcional", points: 1 },
+                    { text: "Tengo una casa decente con varias habitaciones", points: 2 },
+                    { text: "Me hice una mansión bastante grande", points: 3 },
+                    { text: "Tengo un castillo/palacio que tardó semanas en construir", points: 4 }
+                ]
+            },
+            {
+                text: "¿Qué haces cuando aparece un Creeper?",
+                answers: [
+                    { text: "Entro en pánico y muero", points: 0 },
+                    { text: "Intento correr, a veces lo logro", points: 1 },
+                    { text: "Me alejo y lo mato con arco", points: 2 },
+                    { text: "Lo mato de espada sin problemas", points: 3 },
+                    { text: "Lo atraigo de broma y luego lo elimino con estilo", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuánto tiempo podrías estar sin jugar Minecraft?",
+                answers: [
+                    { text: "Meses o años sin problema", points: 0 },
+                    { text: "Unas semanas tranquilo", points: 1 },
+                    { text: "Una semana sería difícil", points: 2 },
+                    { text: "Más de 3 días ya me hace falta", points: 3 },
+                    { text: "¿Sin jugar? No entiendo la pregunta", points: 4 }
+                ]
+            },
+            {
+                text: "¿Alguna vez has pensado en Minecraft mientras estabas haciendo otra cosa?",
+                answers: [
+                    { text: "Nunca, mi vida está separada", points: 0 },
+                    { text: "Muy pocas veces", points: 1 },
+                    { text: "De vez en cuando me viene a la cabeza", points: 2 },
+                    { text: "Bastante seguido, lo confieso", points: 3 },
+                    { text: "Todo el tiempo. Veo bloques en la vida real", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuántas veces has empezado un mundo nuevo?",
+                answers: [
+                    { text: "Nunca o solo una vez", points: 0 },
+                    { text: "Pocas veces, soy fiel a mi mundo", points: 1 },
+                    { text: "Varias veces cuando me aburro", points: 2 },
+                    { text: "Demasiadas veces, siempre empiezo de cero", points: 3 },
+                    { text: "Cada semana un mundo nuevo. Tengo problemas", points: 4 }
+                ]
+            },
+            {
+                text: "¿Has pasado horas buscando diamantes?",
+                answers: [
+                    { text: "Nunca he encontrado diamantes", points: 0 },
+                    { text: "Poco tiempo, encuentro alguno por suerte", points: 1 },
+                    { text: "Me dedico un rato a buscarlos", points: 2 },
+                    { text: "Horas enteras minando en busca de diamantes", points: 3 },
+                    { text: "He pasado noches enteras buscando esa capa 11", points: 4 }
+                ]
+            },
+            {
+                text: "¿Te sabes las coordenadas de tu base?",
+                answers: [
+                    { text: "No sé ni qué son las coordenadas", points: 0 },
+                    { text: "Las busco cuando las necesito", points: 1 },
+                    { text: "Me las sé más o menos", points: 2 },
+                    { text: "Me las sé de memoria perfectamente", points: 3 },
+                    { text: "Me sé las coordenadas de TODO: bases, minas, aldeas...", points: 4 }
+                ]
+            },
+            {
+                text: "¿Has construido una granja automática solo porque podías?",
+                answers: [
+                    { text: "No sé ni qué es eso", points: 0 },
+                    { text: "He visto tutoriales pero no me atrevo", points: 1 },
+                    { text: "He hecho alguna sencilla", points: 2 },
+                    { text: "Tengo varias granjas automáticas funcionando", points: 3 },
+                    { text: "Soy ingeniero de redstone. Mi mundo es una fábrica", points: 4 }
+                ]
+            },
+            {
+                text: "¿Has visto algo en la vida real y has pensado \"eso parece Minecraft\"?",
+                answers: [
+                    { text: "Nunca, para nada", points: 0 },
+                    { text: "Muy rara vez", points: 1 },
+                    { text: "Algunas veces sí", points: 2 },
+                    { text: "Bastante seguido lo hago", points: 3 },
+                    { text: "TODO me parece Minecraft. Ya no veo el mundo igual", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuánto tardas normalmente en conseguir diamantes?",
+                answers: [
+                    { text: "Nunca he conseguido ninguno", points: 0 },
+                    { text: "Muchas horas de búsqueda", points: 1 },
+                    { text: "Un par de horas de minado", points: 2 },
+                    { text: "En menos de una hora los encuentro", points: 3 },
+                    { text: "Los encuentro en los primeros 15 minutos. Soy un profesional", points: 4 }
+                ]
+            },
+            {
+                text: "¿Alguna vez has jugado hasta muy tarde?",
+                answers: [
+                    { text: "Nunca, duermo mis horas", points: 0 },
+                    { text: "Muy de vez en cuando", points: 1 },
+                    { text: "Algunas veces me he pasado de la hora", points: 2 },
+                    { text: "Bastantes noches me quedo hasta tarde", points: 3 },
+                    { text: "He jugado hasta ver salir el sol. El sueño es para débiles", points: 4 }
+                ]
+            },
+            {
+                text: "¿Tienes una estrategia para sobrevivir la primera noche?",
+                answers: [
+                    { text: "Muero siempre la primera noche", points: 0 },
+                    { text: "Me meto en un agujero y espero", points: 1 },
+                    { text: "Hago una casita rápida y me defiendo", points: 2 },
+                    { text: "Tengo mi rutina: madera, herramientas, refugio, cama", points: 3 },
+                    { text: "Soy capaz de matar mobs y sobrevivir a campo abierto el día 1", points: 4 }
+                ]
+            },
+            {
+                text: "¿Cuánto sabes sobre mobs?",
+                answers: [
+                    { text: "Sé que hay cosas que me matan", points: 0 },
+                    { text: "Conozco los más comunes", points: 1 },
+                    { text: "Sé cómo combatir la mayoría", points: 2 },
+                    { text: "Me sé sus debilidades y comportamientos", points: 3 },
+                    { text: "Soy biólogo de Minecraft. Dime cualquier mob y te lo describo", points: 4 }
+                ]
+            },
+            {
+                text: "¿Qué tan difícil sería para ti dejar Minecraft durante una semana?",
+                answers: [
+                    { text: "Fácil, ni lo notaría", points: 0 },
+                    { text: "Se podría hacer sin mucho problema", points: 1 },
+                    { text: "Me costaría un poco pero lo lograría", points: 2 },
+                    { text: "Sería muy difícil, extrañaría mucho", points: 3 },
+                    { text: "Imposible. No sobreviviría. Necesito mis bloques", points: 4 }
+                ]
+            }
+        ];
+
+        const categories = [
+            {
+                min: 0, max: 20,
+                name: "NOVATO DE LOS BLOQUES",
+                icon: "🌱",
+                description: "Apenas estás empezando en el mundo de Minecraft. Los bloques aún no forman parte de tu ADN. Disfruta de descubrir todo lo que este maravilloso juego tiene para ofrecer. ¡Tu aventura apenas comienza!"
+            },
+            {
+                min: 21, max: 40,
+                name: "JUGADOR OCASIONAL",
+                icon: "⛏️",
+                description: "Juegas de vez en cuando y te diviertes, pero tienes tu vida bajo control. Minecraft es un pasatiempo agradable para ti, no una obsesión. Disfrutas construir y explorar sin prisas."
+            },
+            {
+                min: 41, max: 60,
+                name: "MINERO DEDICADO",
+                icon: "💎",
+                description: "Minecraft tiene un lugar importante en tu vida. Pasas bastante tiempo picando piedra y buscando diamantes. Sabes lo que haces y disfrutas cada sesión. Tu base empieza a ser respetable."
+            },
+            {
+                min: 61, max: 80,
+                name: "PROFESIONAL DEL CUBO",
+                icon: "🧱",
+                description: "Eres un jugador experimentado. Conoces cada rincón del juego, dominas el redstone y tus construcciones impresionan. Minecraft es parte importante de tu rutina semanal. ¡Respeto!"
+            },
+            {
+                min: 81, max: 95,
+                name: "STEVE VIVE EN TU CASA",
+                icon: "💀",
+                description: "Tu nivel de adicción es alto. Los bloques dominan gran parte de tus pensamientos y tu tiempo libre. Probablemente sueñas con paisajes pixelados. Quizás deberías salir un poco más... ¡pero quién necesita el exterior cuando tienes Minecraft!"
+            },
+            {
+                min: 96, max: 100,
+                name: "TÚ YA ERES PARTE DE MINECRAFT",
+                icon: "☠️",
+                description: "No juegas Minecraft, tú ERES Minecraft. Tu mente piensa en coordenadas, tu sangre es de lava y tu corazón late al ritmo de un pistón. Has trascendido. Bienvenido al código fuente. Steve y Alex te saludan desde dentro de la pantalla."
+            }
+        ];
+
+        // ============== ESTADO DEL JUEGO ==============
+        let currentQuestion = 0;
+        let totalScore = 0;
+        let selectedAnswer = null;
+        let answers = new Array(questions.length).fill(null);
+
+        // ============== ELEMENTOS DOM ==============
+        const startScreen = document.getElementById('startScreen');
+        const testScreen = document.getElementById('testScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        const startBtn = document.getElementById('startBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const progressLabel = document.getElementById('progressLabel');
+        const progressBar = document.getElementById('progressBar');
+        const questionText = document.getElementById('questionText');
+        const answersContainer = document.getElementById('answersContainer');
+        const resultPercent = document.getElementById('resultPercent');
+        const resultCategory = document.getElementById('resultCategory');
+        const resultDescription = document.getElementById('resultDescription');
+        const resultBlocks = document.getElementById('resultBlocks');
+        const toast = document.getElementById('toast');
+
+        // ============== FUNCIONES ==============
+        function showScreen(screen) {
+            startScreen.classList.remove('active');
+            testScreen.classList.remove('active');
+            resultScreen.classList.remove('active');
+            screen.classList.add('active');
+        }
+
+        function createProgressBar() {
+            progressBar.innerHTML = '';
+            for (let i = 0; i < questions.length; i++) {
+                const block = document.createElement('div');
+                block.className = 'progress-block';
+                if (i < currentQuestion) block.classList.add('filled');
+                if (i === currentQuestion) block.classList.add('current');
+                progressBar.appendChild(block);
+            }
+        }
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+            progressLabel.textContent = `PREGUNTA ${currentQuestion + 1} / ${questions.length}`;
+            questionText.textContent = q.text;
+            
+            createProgressBar();
+            
+            answersContainer.innerHTML = '';
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            
+            q.answers.forEach((answer, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.innerHTML = `<span class="option-letter">${letters[index]}.</span> ${answer.text}`;
+                btn.dataset.points = answer.points;
+                btn.dataset.index = index;
+                
+                if (answers[currentQuestion] !== null && answers[currentQuestion].index === index) {
+                    btn.classList.add('selected');
+                    selectedAnswer = { index: index, points: answer.points };
+                    nextBtn.disabled = false;
+                }
+                
+                btn.addEventListener('click', () => selectAnswer(btn, index, answer.points));
+                answersContainer.appendChild(btn);
+            });
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.textContent = '[ VER MI RESULTADO ]';
+            } else {
+                nextBtn.textContent = '[ SIGUIENTE → ]';
+            }
+            
+            nextBtn.disabled = answers[currentQuestion] === null;
+            selectedAnswer = answers[currentQuestion];
+        }
+
+        function selectAnswer(btn, index, points) {
+            playClick();
+            document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedAnswer = { index: index, points: points };
+            answers[currentQuestion] = selectedAnswer;
+            nextBtn.disabled = false;
+        }
+
+        function nextQuestion() {
+            playClick();
+            if (!selectedAnswer) return;
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                selectedAnswer = answers[currentQuestion];
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function calculateScore() {
+            totalScore = answers.reduce((sum, a) => sum + (a ? a.points : 0), 0);
+            const maxScore = questions.length * 4;
+            return Math.round((totalScore / maxScore) * 100);
+        }
+
+        function getCategory(percent) {
+            for (const cat of categories) {
+                if (percent >= cat.min && percent <= cat.max) {
+                    return cat;
+                }
+            }
+            return categories[categories.length - 1];
+        }
+
+        function animateNumber(element, target, duration) {
+            const start = 0;
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.floor(start + (target - start) * eased);
+                element.textContent = current + '%';
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function createResultBlocks() {
+            resultBlocks.innerHTML = '';
+            const blockTypes = ['block-grass', 'block-dirt', 'block-stone', 'block-diamond', 'block-gold'];
+            const numBlocks = 10;
+            
+            for (let i = 0; i < numBlocks; i++) {
+                const block = document.createElement('div');
+                block.className = `result-block ${blockTypes[i % blockTypes.length]}`;
+                resultBlocks.appendChild(block);
+                
+                setTimeout(() => {
+                    block.classList.add('show');
+                }, 200 + i * 100);
+            }
+        }
+
+        function showResult() {
+            showScreen(resultScreen);
+            
+            const percent = calculateScore();
+            const category = getCategory(percent);
+            
+            resultPercent.textContent = '0%';
+            resultCategory.textContent = `${category.name} ${category.icon}`;
+            resultDescription.textContent = category.description;
+            
+            createResultBlocks();
+            
+            setTimeout(() => {
+                animateNumber(resultPercent, percent, 1500);
+            }, 300);
+            
+            resultScreen.dataset.percent = percent;
+        }
+
+        function resetGame() {
+            playClick();
+            currentQuestion = 0;
+            totalScore = 0;
+            selectedAnswer = null;
+            answers = new Array(questions.length).fill(null);
+            showScreen(startScreen);
+        }
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        async function shareResult() {
+            playClick();
+            const percent = resultScreen.dataset.percent || calculateScore();
+            const text = `Acabo de hacer el test ¿Qué tan adicto eres a Minecraft? y obtuve un ${percent}%. ¿Cuánto sacarías tú? ⛏️💎`;
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'Test de Adicción a Minecraft',
+                        text: text
+                    });
+                } catch (err) {
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    showToast('¡RESULTADO COPIADO!');
+                } catch (err) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = text;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    showToast('¡RESULTADO COPIADO!');
+                }
+            }
+        }
+
+        // ============== APLICAR SONIDO A TODOS LOS BOTONES ==============
+        function applyClickSoundToButtons() {
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (!btn.classList.contains('answer-btn') && 
+                    btn.id !== 'musicToggle') {
+                    btn.addEventListener('click', playClick);
+                }
+            });
+        }
+
+        // ============== EVENT LISTENERS ==============
+        startBtn.addEventListener('click', () => {
+            initAudioContext();
+            if (!musicEnabled) {
+                bgMusic.play().then(() => {
+                    musicEnabled = true;
+                    musicToggle.textContent = '♫ ON';
+                    musicToggle.classList.add('music-on');
+                }).catch(() => {});
+            }
+            showScreen(testScreen);
+            showQuestion();
+        });
+
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', resetGame);
+        shareBtn.addEventListener('click', shareResult);
+
+        applyClickSoundToButtons();
+
+    })();
+    </script>
+</body>
+</html>
